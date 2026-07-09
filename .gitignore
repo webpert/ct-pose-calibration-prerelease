@@ -1,0 +1,14 @@
+__pycache__
+src/build/
+*.egg-info
+*.pyd
+src/.vscode/
+src/output
+src/pose_gaussian/submodules/simple-knn/
+src/pose_gaussian/submodules/self-xray-gaussian-rasterization-voxelization/third_party/glm/
+*.zip
+src/TIGRE*
+src/config/*.yaml
+!src/config/default.yaml
+/*.npy
+~$*
