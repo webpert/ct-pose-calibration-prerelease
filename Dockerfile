@@ -23,9 +23,9 @@ RUN python -m pip install --upgrade pip setuptools wheel
 RUN pip install torch torchvision torchaudio \
     --index-url https://download.pytorch.org/whl/cu118
 
-RUN pip install plotly pyyaml lie-torch
+RUN pip install plotly pyyaml lietorch
 
-# CTMAR Gaussian
+# Pose Gaussian
 WORKDIR /workspace/src
 
 RUN git clone https://gitlab.inria.fr/bkerbl/simple-knn.git pose_gaussian/submodules/simple-knn
