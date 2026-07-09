@@ -1,16 +1,16 @@
-# Splat-Based Metal Artifact Reduction in Cone-Beam CT via Compact Attenuation Modeling
-X-ray computed tomography (CT) suffers from severe metal artifacts when high-attenuation objects such as dental fillings or orthopedic implants are present. These artifacts originate from the polychromatic nature of X-rays, where attenuation varies strongly with photon energy and material composition, breaking the monochromatic assumption used by conventional reconstruction algorithms. Recent neural rendering approaches attempt to address this mismatch through differentiable polychromatic projection models, but they still struggle with smoothness bias, loss of fine structures, and prohibitive computation when extended to largescale cone-beam CT. We introduce a splat-based metal artifact reduction framework that incorporates a physically grounded polychromatic forward model into a continuous Gaussian representation for cone-beam CT. Each Gaussian encodes the energy-dependent attenuation of the underlying material using a compact material parameterization, which enables efficient joint optimization of geometric and material properties without relying on a metal mask. This compact attenuation formulation captures the essential variation across biological tissues and metallic implants, allowing our model to explain metal-induced nonlinearity while preserving high-frequency structure. Experiments on simulated and real cone-beam CT scans show that our method converges significantly faster and suppresses metal artifacts more effectively than existing reconstruction and neural field-based approaches.
+# Revisiting Pose Sensitivity in Splat-based Computed Tomography under Sparse-view Reconstruction
+X-ray computed tomography (CT) reconstructs volumetric representations of objects from projection images obtained by transmitting X-rays through a target. Recent splat-based tomography, which represents a volume as a continuous distribution of 3D Gaussians, has demonstrated both high reconstruction quality and fast convergence in cone-beam sparse-view CT. However, when deployed in real CT systems with limited and non-uniform view distributions, we observe distinctive streak and strip artifacts that are far more pronounced than in conventional reconstruction methods. Through detailed analysis, we show that these artifacts primarily originate from pose inaccuracies in the acquisition geometry rather than from view sparsity itself. We revisit pose sensitivity in the splatting formulation and derive a stable gradient-based framework that jointly refines geometric parameters during reconstruction. Our study not only identifies how pose perturbations propagate through the differentiable projection operator but also reveals why splat-based CT is particularly vulnerable to geometric misalignment. The resulting formulation remains lightweight and easily integrable into existing pipelines while substantially improving reconstruction fidelity under real-world sparse-view conditions.
 
-### [Project page](https://vclab.kaist.ac.kr/cvpr2026p1/index.html) | [Paper](https://vclab.kaist.ac.kr/cvpr2026p1/cbct_mar_main.pdf) | [Supplemental](https://vclab.kaist.ac.kr/cvpr2026p1/cbct_mar_supp.pdf)
+### [Project page](https://vclab.kaist.ac.kr/cvpr2026p2/index.html) | [Paper](https://vclab.kaist.ac.kr/cvpr2026p2/cbct_pose_main.pdf) | [Supplemental](https://vclab.kaist.ac.kr/cvpr2026p2/cbct_pose_supp.pdf)
 [Kiseok Choi](https://sites.google.com/view/kiseokchoi), 
-[Jaemin Cho](http://vclab.kaist.ac.kr/jmcho/index.html), 
+[Hyeongjun Cho](http://vclab.kaist.ac.kr/hjcho/index.html), 
 [Inchul Kim](https://inchul-kim.github.io/), 
 [Min H. Kim](http://vclab.kaist.ac.kr/minhkim/index.html)
 
-This repository is organized around the execution pipeline defined in `.vscode/launch.json`.
+This repository consists of runnable codes as:
 
 - `initialize_pcd.py`: Initializes the Gaussian point cloud
-- `train.py`: Runs CBCT reconstruction with metal artifact reduction
+- `train.py`: Runs CBCT reconstruction with pose calibration
 
 ## Tested Environment
 ```
@@ -25,21 +25,21 @@ CUDA: 13.1 (Driver: 590.48.01)
 ## Setup
 Ensure that your system supports CUDA and Docker. Then clone this repository and move into the project directory.
 ```
-git clone https://github.com/KAIST-VCLAB/ct-metal-reduction-mac.git
-cd ct-metal-reduction-mac
+git clone https://github.com/KAIST-VCLAB/ct-pose-calibration.git
+cd ct-pose-calibration
 ```
 
 Build the Docker image using Dockerfile. This process may take several minutes.
 ```
-docker build -t r2gs_bhc_mac:cuda118 .
+docker build -t r2gs_pose:cuda118 .
 ```
 Launch the Docker container. Modify the options below according to your environment.
 ```
 docker run -it --gpus all \
-  --name r2gs_bhc_mac \
+  --name r2gs_pose \
   -v /mnt/datassd/kschoi/data:/workspace/data \
   -p 20000:20000 \
-  r2gs_bhc_mac:cuda118
+  r2gs_pose:cuda118
 ```
 
 ## Data Preparation
@@ -47,7 +47,7 @@ Download one of the datasets from [link](https://drive.google.com/drive/folders/
 
 ## Gaussian Initialization
 Run the following command to initialize the Gaussian representation.<br>
-($SCENE_PATH can be ``real_avocado`` or something).
+($SCENE_PATH can be ``walnut`` or something).
 ```
 python initialize_pcd.py --data $SCENE_PATH
 ```
@@ -58,17 +58,17 @@ Modify ``source_path`` in ``./config/default.yaml`` and start reconstruction usi
 ```
 python train.py --config $CONFIG_FILE_PATH
 ```
-After optimization completes (20,000 iterations), the reconstructed volume will be saved to:
+After optimization completes (30,000 iterations), the reconstructed volume will be saved to:
 ```
-./output/$CONFIG_FILE_NAME_MM-DD-hh-mm-ss/point_cloud/iteration_20000/vol_center.npy
+./output/$CONFIG_FILE_NAME_MM-DD-hh-mm-ss/point_cloud/iteration_30000/vol_pred.npy
 ```
 
 ## Citation
 ```	
-@InProceedings{Choi_2026p1_CVPR,
-   author = {Choi, Kiseok and Cho, Jaemin and Kim, Inchul and Kim, Min H.},
-   title = {Splat-Based Metal Artifact Reduction in Cone-Beam CT 
-            via Compact Attenuation Modeling},
+@InProceedings{Choi_2026p2_CVPR,
+   author = {Choi, Kiseok and Cho, Hyeongjun and Kim, Inchul and Kim, Min H.},
+   title = {Revisiting Pose Sensitivity in Splat-based Computed 
+            Tomography under Sparse-view Reconstruction},
    booktitle = {IEEE Conference on Computer Vision and 
       Pattern Recognition (CVPR)},
    month = {June},
