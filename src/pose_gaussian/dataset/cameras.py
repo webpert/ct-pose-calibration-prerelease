@@ -96,8 +96,18 @@ class Camera(nn.Module):
         self.delta_quaternion = nn.Parameter(torch.zeros(4).cuda().requires_grad_(True))
         # self.quaternion = self.init_quaternion + self.delta_quaternion
 
-        self.learnable_fovx = nn.Parameter(torch.tensor(self.FoVx).cuda().requires_grad_(True))
-        self.learnable_fovy = nn.Parameter(torch.tensor(self.FoVy).cuda().requires_grad_(True)) 
+        self.learnable_fovx = nn.Parameter(
+            torch.as_tensor(self.FoVx, dtype=torch.float32, device="cuda")
+            .detach()
+            .clone()
+            .requires_grad_(True)
+        )
+        self.learnable_fovy = nn.Parameter(
+            torch.as_tensor(self.FoVy, dtype=torch.float32, device="cuda")
+            .detach()
+            .clone()
+            .requires_grad_(True)
+        )
 
         self.spatial_lr_scale = 0
 

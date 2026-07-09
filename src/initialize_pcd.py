@@ -61,7 +61,7 @@ def init_pcd(
         print(
             f"s with the volume reconstructed from {recon_method}."
         )
-        if True:
+        if False:
             vol_fdk_name = osp.join(osp.dirname(save_path), "vol_gt.npy")
             vol = np.load(vol_fdk_name)
         else:
