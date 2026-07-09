@@ -80,6 +80,6 @@ After optimization completes (20,000 iterations), the reconstructed volume will 
 
 This project is released under the MIT License.
 
-This code is built upon and contains modifications of the [R2-Gaussian](https://github.com/ruyi-zha/pose_gaussian) project, which is also distributed under the MIT License. We gratefully acknowledge the authors for making their code publicly available.
+This code is built upon and contains modifications of the [R2-Gaussian](https://github.com/ruyi-zha/r2_gaussian) project, which is also distributed under the MIT License. We gratefully acknowledge the authors for making their code publicly available.
 
 See the LICENSE file for details.
