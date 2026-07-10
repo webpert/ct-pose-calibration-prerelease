@@ -41,6 +41,17 @@ RUN python -m pip install \
     pose_gaussian/submodules/self-xray-gaussian-rasterization-voxelization \
     --no-build-isolation
 
+# Lie torch
+WORKDIR /workspace/src
+RUN git clone https://github.com/princeton-vl/lietorch.git
+WORKDIR /workspace/src/lietorch
+RUN python -m pip install -U numpy ninja setuptools wheel && \
+    git submodule sync --recursive && \
+    git submodule update --init --recursive && \
+    rm -rf build dist *.egg-info && \
+    find . -name "*.so" -delete && \
+    LD_LIBRARY_PATH="${CUDA_HOME}/lib64:${LD_LIBRARY_PATH:-}" MAX_JOBS=4 python -m pip install -e . --no-build-isolation
+
 # TIGRE
 WORKDIR /workspace
 
