@@ -9,6 +9,7 @@ X-ray computed tomography (CT) reconstructs volumetric representations of object
 
 This repository consists of runnable codes as:
 
+- `data_generator/generate_data_with_noisy_pose.py`: Generates the randomly transformed projections
 - `initialize_pcd.py`: Initializes the Gaussian point cloud
 - `train.py`: Runs CBCT reconstruction with pose calibration
 
