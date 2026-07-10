@@ -140,9 +140,11 @@ def main(args):
     ]
 
     # Save
-    case_save_path = osp.join(output_path, case_name)
+    case_save_path = output_path
     os.makedirs(case_save_path, exist_ok=True)
-    np.save(osp.join(case_save_path, "vol_gt.npy"), vol)
+    vol_save_path = osp.join(case_save_path, "vol_gt.npy")
+    if not osp.exists(vol_save_path):
+        np.save(vol_save_path, vol)
     np.save(osp.join(case_save_path, "quaternions.npy"), quat_dict)
     np.save(osp.join(case_save_path, "translations.npy"), trans_dict)
 
@@ -183,9 +185,9 @@ if __name__ == "__main__":
     # fmt: off
     parser = argparse.ArgumentParser(description="Data generator parameters")
     
-    parser.add_argument("--vol", default="/workspace/data/noisy_dataset/vol_gt.npy", type=str, help="Path to volume.")
-    parser.add_argument("--scanner", default="cone_beam.yml", type=str, help="Path to scanner configuration.")
-    parser.add_argument("--output", default="/workspace/data/noisy_dataset", type=str, help="Path to output.")
+    parser.add_argument("--vol", default="/workspace/data/walnut/vol_gt.npy", type=str, help="Path to volume.")
+    parser.add_argument("--scanner", default="/workspace/src/data_generator/cone_beam.yml", type=str, help="Path to scanner configuration.")
+    parser.add_argument("--output", default="/workspace/data/walnut_noisy", type=str, help="Path to output.")
     parser.add_argument("--n_train", default=75, type=int, help="Number of projections for training.")
     parser.add_argument("--n_test", default=10, type=int, help="Number of projections for evaluation.")
     parser.add_argument("--std_rot", default=0.03, type=float, help="Standard deviation of log(R) in Lie algebra.")
