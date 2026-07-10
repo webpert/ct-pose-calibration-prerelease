@@ -1,29 +1,38 @@
-FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
+FROM nvidia/cuda:12.6.0-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Seoul
 ENV CUDA_HOME=/usr/local/cuda
 ENV PATH=${CUDA_HOME}/bin:${PATH}
-ENV TORCH_CUDA_ARCH_LIST="7.5;8.0;8.6;8.9"
+ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0"
 
 WORKDIR /workspace
 COPY src ./src
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git wget unzip build-essential cmake ninja-build \
+    software-properties-common wget unzip build-essential cmake ninja-build \
     libgl1-mesa-glx libglib2.0-0 libglew-dev libassimp-dev \
     libboost-all-dev libgtk-3-dev libopencv-dev \
-    python3 python3-pip python-is-python3 tzdata \
+    tzdata ca-certificates gnupg lsb-release \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get update && apt-get install -y --no-install-recommends \
+    python3.13 python3.13-distutils python3.13-venv python3.13-dev \
+    && ln -fs /usr/bin/python3.13 /usr/bin/python \
+    && ln -fs /usr/bin/python3.13 /usr/bin/python3 \
+    && python3.13 -m ensurepip --upgrade \
+    && python3.13 -m pip install --upgrade pip setuptools wheel \
+    && ln -fs /usr/local/bin/pip3 /usr/bin/pip \
+    && ln -fs /usr/local/bin/pip3 /usr/bin/pip3 \
     && ln -fs /usr/share/zoneinfo/Asia/Seoul /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata \
     && rm -rf /var/lib/apt/lists/*
 
 RUN python -m pip install --upgrade pip setuptools wheel
 
-RUN pip install torch==2.6.* torchvision==0.21.* torchaudio==2.6.* \
-    --index-url https://download.pytorch.org/whl/cu118
+RUN python -m pip install torch==2.6.0+cu126 torchvision==0.21.0+cu126 torchaudio==2.6.0 \
+    --index-url https://download.pytorch.org/whl/cu126
 
-RUN pip install plotly pyyaml lietorch==0.6.2
+RUN python -m pip install plotly pyyaml lietorch==0.8.2
 
 # Pose Gaussian
 WORKDIR /workspace/src
