@@ -9,7 +9,7 @@ X-ray computed tomography (CT) reconstructs volumetric representations of object
 
 This repository consists of runnable codes as:
 
-- `data_generator/generate_data_with_noisy_pose.py`: Generates the randomly transformed projections
+- `data_generator/generate_data_with_noisy_pose.py`: Generates randomly transformed projections
 - `initialize_pcd.py`: Initializes the Gaussian point cloud
 - `train.py`: Runs CBCT reconstruction with pose calibration
 
@@ -48,7 +48,7 @@ Download one of the datasets from [link](https://drive.google.com/drive/folders/
 
 ## Gaussian Initialization
 Run the following command to initialize the Gaussian representation.<br>
-($SCENE_PATH can be ``walnut`` or something).
+($SCENE_PATH can be ``beetle_noisy`` or something).
 ```
 python initialize_pcd.py --data $SCENE_PATH
 ```
