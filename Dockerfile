@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget unzip build-essential cmake ninja-build \
     libgl1-mesa-glx libglib2.0-0 libglew-dev libassimp-dev \
     libboost-all-dev libgtk-3-dev libopencv-dev \
-    python3 python3-pip python3-venv python3-dev tzdata ca-certificates \
+    python3 python3-pip python3-venv python3-dev python-is-python3 tzdata ca-certificates \
     && ln -fs /usr/bin/python3 /usr/bin/python \
     && ln -fs /usr/bin/python3 /usr/bin/python3 \
     && python3 -m pip install --upgrade pip setuptools wheel \
