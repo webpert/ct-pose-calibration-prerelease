@@ -23,6 +23,7 @@ import scipy.ndimage
 import sys
 import torch
 from lietorch import SO3
+import tqdm
 
 
 sys.path.append("./")
@@ -78,9 +79,10 @@ def main(args):
     with open(scanner_cfg_path, "r") as handle:
         scanner_cfg = yaml.safe_load(handle)
 
-    case_name = f"{vol_name}_{scanner_cfg['mode']}"
-    print(f"Generate data for case {case_name}")
+    print(f"Generate data for case {vol_path}")
     geo = get_geometry_tigre(scanner_cfg)
+
+    print("scanner load complete")
 
     # Load volume
     vol = np.load(vol_path).astype(np.float32)
@@ -91,6 +93,7 @@ def main(args):
         + scanner_cfg["startAngle"] / 180 * np.pi
     ) # (n,)
 
+    print("projection angles load complete")
 
     ############################### modified ###############################
     if args.std_rot > 0.0:
@@ -110,7 +113,7 @@ def main(args):
     quat_dict = dict()
     trans_dict = dict()
 
-    for angle_idx in range(projs_train_angles.shape[0]):
+    for angle_idx in tqdm.tqdm(range(projs_train_angles.shape[0]), desc="Transforming volumes"):
         vol_transformed = transform_volume(vol, dR, dt, angle_idx) # modified: add perturbation
         proj_train = tigre.Ax(
             np.transpose(vol_transformed, (2, 1, 0)).copy(), geo, np.array([projs_train_angles[angle_idx]])
@@ -119,9 +122,6 @@ def main(args):
         projs_train.append(proj_train)
     projs_train = np.asarray(projs_train)
 
-    # projs_train = tigre.Ax(
-    #     np.transpose(vol, (2, 1, 0)).copy(), geo, projs_train_angles
-    # )[:, ::-1, :] # n x 512 x 512 (in general)
     if scanner_cfg["noise"]:
         projs_train = CTnoise.add(
             projs_train,
@@ -138,6 +138,8 @@ def main(args):
     projs_test = tigre.Ax(np.transpose(vol, (2, 1, 0)).copy(), geo, projs_test_angles)[
         :, ::-1, :
     ]
+
+    print("projection generation complete")
 
     # Save
     case_save_path = output_path
@@ -178,7 +180,7 @@ def main(args):
 
     with open(osp.join(case_save_path, "meta_data.json"), "w", encoding="utf-8") as f:
         json.dump(meta, f, indent=4)
-    print(f"Generate data for case {case_name} complete!")
+    print(f"Generate data to {case_save_path} complete!")
 
 
 if __name__ == "__main__":
