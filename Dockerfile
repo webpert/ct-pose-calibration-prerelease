@@ -45,16 +45,15 @@ RUN apt-get update \
 RUN python3 --version \
     && python3 -m pip --version
 
-RUN python3 -m pip install --break-system-packages --no-cache-dir --upgrade \
-    pip setuptools wheel
+RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel
 
-RUN python3 -m pip install --break-system-packages --no-cache-dir \
+RUN python3 -m pip install --no-cache-dir \
     torch==2.0.2 \
     torchvision==0.15.2 \
     torchaudio==2.0.2 \
     --index-url https://download.pytorch.org/whl/cu118
 
-RUN python3 -m pip install --break-system-packages --no-cache-dir \
+RUN python3 -m pip install --no-cache-dir \
     plotly \
     pyyaml \
     lietorch==0.6.2
@@ -64,16 +63,16 @@ WORKDIR /workspace/src
 RUN git clone https://gitlab.inria.fr/bkerbl/simple-knn.git pose_gaussian/submodules/simple-knn \
     && git clone https://github.com/g-truc/glm.git pose_gaussian/submodules/self-xray-gaussian-rasterization-voxelization/third_party/glm
 
-RUN python3 -m pip install --break-system-packages --no-cache-dir -r requirements.txt \
+RUN python3 -m pip install --no-cache-dir -r requirements.txt \
     scikit-learn==1.3.2
 
 RUN python3 -c "import torch; print(torch.__version__, torch.version.cuda)"
 
-RUN python3 -m pip install --break-system-packages --no-cache-dir \
+RUN python3 -m pip install --no-cache-dir \
     pose_gaussian/submodules/simple-knn \
     --no-build-isolation
 
-RUN python3 -m pip install --break-system-packages --no-cache-dir \
+RUN python3 -m pip install --no-cache-dir \
     pose_gaussian/submodules/self-xray-gaussian-rasterization-voxelization \
     --no-build-isolation
 
@@ -81,7 +80,7 @@ WORKDIR /workspace
 
 RUN wget https://github.com/CERN/TIGRE/archive/refs/tags/v2.3.zip \
     && unzip v2.3.zip \
-    && python3 -m pip install --break-system-packages --no-cache-dir TIGRE-2.3/Python --no-build-isolation \
+    && python3 -m pip install --no-cache-dir TIGRE-2.3/Python --no-build-isolation \
     && rm v2.3.zip
 
 WORKDIR /workspace/src
