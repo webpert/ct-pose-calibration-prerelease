@@ -183,14 +183,13 @@ if __name__ == "__main__":
     # fmt: off
     parser = argparse.ArgumentParser(description="Data generator parameters")
     
-    parser.add_argument("--vol", default="/workspace/data/pose_gaussian/synthetic_dataset/cone_ntrain_75_angle_360/0_chest_cone/vol_gt.npy", type=str, help="Path to volume.")
+    parser.add_argument("--vol", default="/workspace/data/noisy_dataset/vol_gt.npy", type=str, help="Path to volume.")
     parser.add_argument("--scanner", default="cone_beam.yml", type=str, help="Path to scanner configuration.")
-    parser.add_argument("--output", default="/workspace/data/noisy_dataset/cone_ntrain_75_angle_360", type=str, help="Path to output.")
+    parser.add_argument("--output", default="/workspace/data/noisy_dataset", type=str, help="Path to output.")
     parser.add_argument("--n_train", default=75, type=int, help="Number of projections for training.")
     parser.add_argument("--n_test", default=10, type=int, help="Number of projections for evaluation.")
-
-    parser.add_argument("--std_rot", default=-1.0, type=float, help="Standard deviation of log(R) in Lie algebra.")
-    parser.add_argument("--std_trans", default=-1.0, type=float, help="Standard deviation of translation.")
+    parser.add_argument("--std_rot", default=0.03, type=float, help="Standard deviation of log(R) in Lie algebra.")
+    parser.add_argument("--std_trans", default=1.0, type=float, help="Standard deviation of translation.")
     # fmt: on
 
     args = parser.parse_args()
