@@ -48,9 +48,9 @@ RUN python3 --version \
 RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel
 
 RUN python3 -m pip install --no-cache-dir \
-    torch==2.0.2 \
-    torchvision==0.15.2 \
-    torchaudio==2.0.2 \
+    torch==2.0.1+cu118 \
+    torchvision==0.15.1+cu118 \
+    torchaudio==2.0.1+cu118 \
     --index-url https://download.pytorch.org/whl/cu118
 
 RUN python3 -m pip install --no-cache-dir \
