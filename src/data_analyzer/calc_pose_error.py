@@ -17,13 +17,13 @@ cnt = 0
 for dirname in sorted(dirnames):
     if 'ours' in dirname or 'r2gs' in dirname:
         continue
-    path_q_gt = path / dirname / "vol_gt_cone/quaternions.npy"
-    path_t_gt = path / dirname / "vol_gt_cone/translations.npy"
+    path_q_gt = path / dirname / "quaternions.npy"
+    path_t_gt = path / dirname / "translations.npy"
     path_ours = path / "ours_results" / dirname / "eval/iter_030000"
 
     dq_gt = np.load(str(path_q_gt), allow_pickle=True).item()
     dt_gt = np.load(str(path_t_gt), allow_pickle=True).item()
-    source_path = f'/workspace/data/noisy_dataset-rot0_03-trans1/{dirname}/vol_gt_cone'
+    source_path = f'/workspace/data/noisy_dataset-rot0_03-trans1/{dirname}'
     scene_info = readBlenderInfo(source_path, False)
     camera_info = scene_info.train_cameras
 
