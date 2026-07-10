@@ -27,7 +27,7 @@ class InitParams(ParamGroup):
     def __init__(self, parser):
         self.recon_method = "fdk"
         self.n_points = 50000
-        self.density_thresh = 0.05      # default: 0.05, CNU: 0.01, 0.03 for ???
+        self.density_thresh = 0.05
         self.density_rescale = 0.15
         self.random_density_max = 1.0  # Parameters for random mode
         super().__init__(parser, "Initialization Parameters")
@@ -59,13 +59,9 @@ def init_pcd(
     else:
         # Use traditional algorithms for initialization
         print(
-            f"s with the volume reconstructed from {recon_method}."
+            f"Initialize point clouds with the volume reconstructed from {recon_method}."
         )
-        if False:
-            vol_fdk_name = osp.join(osp.dirname(save_path), "vol_gt.npy")
-            vol = np.load(vol_fdk_name)
-        else:
-            vol = recon_volume(projs, angles, copy.deepcopy(geo), recon_method)
+        vol = recon_volume(projs, angles, copy.deepcopy(geo), recon_method)
         # show_one_volume(vol)
 
         density_mask = vol > args.density_thresh

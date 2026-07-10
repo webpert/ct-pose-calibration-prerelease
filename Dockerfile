@@ -20,10 +20,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN python -m pip install --upgrade pip setuptools wheel
 
-RUN pip install torch torchvision torchaudio \
+RUN pip install torch==2.6.* torchvision==0.21.* torchaudio==2.6.* \
     --index-url https://download.pytorch.org/whl/cu118
 
-RUN pip install plotly pyyaml lietorch
+RUN pip install plotly pyyaml lietorch==0.8.2
 
 # Pose Gaussian
 WORKDIR /workspace/src
