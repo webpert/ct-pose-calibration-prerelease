@@ -44,7 +44,13 @@ docker run -it --gpus all \
 ```
 
 ## Data Preparation
-Download one of the datasets from [link](https://drive.google.com/drive/folders/15hwnG4oUeEz-t1Psrwi0Zm--22L_T70O?usp=drive_link) and extract it to your preferred directory.
+[Option 1] Download one of the datasets from [link](https://drive.google.com/drive/folders/15hwnG4oUeEz-t1Psrwi0Zm--22L_T70O?usp=drive_link) and extract it to your preferred directory.
+
+[Option 2] Generate noisy dataset using a ground-truth 3D volume ($INPUT_VOLUME_PATH) and a cone-beam configuration ($CONE_BEAM_CONFIG_PATH) as:
+```
+python data_generator/generate_data_with_noisy_pose.py --vol $INPUT_VOLUME_PATH --scanner $CONE_BEAM_CONFIG_PATH --output $OUTPUT_PATH
+```
+Some other related parameters can be configured with the command-line arguments.
 
 ## Gaussian Initialization
 Run the following command to initialize the Gaussian representation.<br>
